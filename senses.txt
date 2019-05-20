@@ -1,0 +1,36 @@
+S1 - Love - Person     			- E0_1, E1_2, E3_1, E8_3, E9_2 E13_3
+S2 - Love - Thing      			- E0_2, E1_3, E3_2, E8_2, E13_2
+S3 - Laughter / Humour 			- E2_1, E14_1, E16_5, E19_2
+S4 - Fire              			- E4_1
+S5 - Attractiveness            		- E4_2
+S6 - Lit (Awesome / "on fire") 		- E4_3, E15_3
+S7 - Happy 				- E1_4, E5_1, E16_3
+S8 - Embarassed 			- E5_2
+S9 - Cool 				- E6_1
+S10 - Sunny 				- E6_2, E12_2
+S11 - Stars 				- E7_1
+S12 - Sparkles / Special / Celebrate 	- E7_2
+S13 - Blue 				- E8_1
+S14 - Kiss 				- E9_1
+S15 - Photo 				- E10_1, E18_1
+S16 - Tourist / Travel 			- E10_2, E18_2
+S17 - Country - USA 			- E11_1
+S18 - Patriotism 			- E11_2
+S19 - Sun 				- E12_1
+S20 - Purple 				- E13_1
+S21 - Suggestive 			- E14_2
+S22 - Sarcasm 				- E14_3, E19_3
+S23 - 100 				- E15_1
+S24 - Honesty 				- E15_2
+S25 - Dentist / Teeth 			- E16_1
+S26 - Cold (Chattering Teeth) 		- E16_2
+S27 - Grimace 				- E16_3
+S28 - Christmas 			- E17_1
+S29 - Christmas Tree 			- E17_2
+S30 - Silly / Cheeky 			- E19_1
+S31 - Pink				- E3_3
+S32 - Breast Cancer			- E3_4
+S33 - Glasses				- E6_3
+S34 - Autism				- E8_4
+S35 - Election				- E11_3
+S36 - Prince (Singer)			- E13_4
