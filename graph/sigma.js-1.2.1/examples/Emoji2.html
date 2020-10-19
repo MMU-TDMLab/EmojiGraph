@@ -1,0 +1,2004 @@
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+
+
+<!-- END SIGMA IMPORTS -->
+<script src="../plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
+
+<script src="../plugins/sigma.layout.forceAtlas2/worker.js"></script>
+<script src="../plugins/sigma.layout.forceAtlas2/supervisor.js"></script>
+
+
+<div id="container">
+  <style>
+    #graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+
+    #sidebar {
+      bottom: 0;
+      right: 0;
+      width: 200px;
+      height: 150px;
+      position: absolute;
+      background-color: #999;
+      padding: 10px;
+    }
+  </style>
+  <div id="graph-container"></div>
+</div>
+<script>
+/**
+ * This example shows how to use the dragNodes plugin.
+ */
+var i,
+    s,
+    g = {
+      nodes: [],
+      edges: []
+    };
+
+g.nodes.push({
+id: 'S0',
+label: 'Synset('trait.n.01'): 😍😒💕❤️😘😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S1',
+label: 'Synset('blessed.a.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S13',
+label: 'Synset('tear.n.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S14',
+label: 'Synset('event.n.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S20',
+label: 'Synset('amuse.v.02'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S24',
+label: 'Synset('love.v.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S26',
+label: 'Synset('state.n.02'): 😍😒😩💕❤️😊😘😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S29',
+label: 'Synset('fashionable.a.01'): 😊😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S36',
+label: 'Synset('love.v.03'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S42',
+label: 'Synset('adore.v.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S44',
+label: 'Synset('care.v.02'): ❤️😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S50',
+label: 'Synset('cognition.n.01'): ❤️😘😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S55',
+label: 'Synset('grateful.a.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S56',
+label: 'Synset('affect.v.05'): ❤️😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S66',
+label: 'Synset('overwhelm.v.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S67',
+label: 'Synset('overjoy.v.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S68',
+label: 'Synset('like.v.02'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S70',
+label: 'Synset('message.n.02'): 😍😒😩💕❤️😊😘😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S71',
+label: 'Synset('upset.v.02'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S72',
+label: 'Synset('greet.v.01'): 😩❤️😊😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S76',
+label: 'Synset('hopeless.a.01'): ❤️',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S78',
+label: 'Synset('quality.n.01'): 😍😒😩💕❤️😊😘😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.nodes.push({
+id: 'S81',
+label: 'Synset('receive.v.05'): ❤️😭',
+x: Math.random(),
+y: Math.random(),
+size: 3,
+color: '#666'})
+
+g.edges.push({
+id: 'e0',
+source: 'S1',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e1',
+source: 'S13',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e2',
+source: 'S13',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e3',
+source: 'S14',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e4',
+source: 'S14',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e5',
+source: 'S14',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e6',
+source: 'S20',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e7',
+source: 'S20',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e8',
+source: 'S20',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e9',
+source: 'S20',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e10',
+source: 'S24',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e11',
+source: 'S24',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e12',
+source: 'S24',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e13',
+source: 'S24',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e14',
+source: 'S24',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e15',
+source: 'S26',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e16',
+source: 'S26',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e17',
+source: 'S26',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e18',
+source: 'S26',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e19',
+source: 'S26',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e20',
+source: 'S26',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e21',
+source: 'S29',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e22',
+source: 'S29',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e23',
+source: 'S36',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e24',
+source: 'S36',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e25',
+source: 'S36',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e26',
+source: 'S36',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e27',
+source: 'S36',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e28',
+source: 'S36',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e29',
+source: 'S36',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e30',
+source: 'S42',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e31',
+source: 'S42',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e32',
+source: 'S42',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e33',
+source: 'S42',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e34',
+source: 'S42',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e35',
+source: 'S42',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e36',
+source: 'S42',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e37',
+source: 'S42',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e38',
+source: 'S44',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e39',
+source: 'S44',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e40',
+source: 'S44',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e41',
+source: 'S44',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e42',
+source: 'S44',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e43',
+source: 'S44',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e44',
+source: 'S44',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e45',
+source: 'S44',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e46',
+source: 'S44',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e47',
+source: 'S44',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e48',
+source: 'S50',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e49',
+source: 'S50',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e50',
+source: 'S50',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e51',
+source: 'S50',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e52',
+source: 'S50',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e53',
+source: 'S50',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e54',
+source: 'S50',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e55',
+source: 'S50',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e56',
+source: 'S50',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e57',
+source: 'S50',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e58',
+source: 'S50',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e59',
+source: 'S55',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e60',
+source: 'S55',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e61',
+source: 'S55',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e62',
+source: 'S55',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e63',
+source: 'S55',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e64',
+source: 'S55',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e65',
+source: 'S55',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e66',
+source: 'S55',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e67',
+source: 'S55',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e68',
+source: 'S55',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e69',
+source: 'S55',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e70',
+source: 'S56',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e71',
+source: 'S56',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e72',
+source: 'S56',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e73',
+source: 'S56',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e74',
+source: 'S56',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e75',
+source: 'S56',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e76',
+source: 'S56',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e77',
+source: 'S56',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e78',
+source: 'S56',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e79',
+source: 'S56',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e80',
+source: 'S56',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e81',
+source: 'S56',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e82',
+source: 'S56',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e83',
+source: 'S66',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e84',
+source: 'S66',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e85',
+source: 'S66',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e86',
+source: 'S66',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e87',
+source: 'S66',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e88',
+source: 'S66',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e89',
+source: 'S66',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e90',
+source: 'S66',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e91',
+source: 'S66',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e92',
+source: 'S66',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e93',
+source: 'S66',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e94',
+source: 'S66',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e95',
+source: 'S66',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e96',
+source: 'S67',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e97',
+source: 'S67',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e98',
+source: 'S67',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e99',
+source: 'S67',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e100',
+source: 'S67',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e101',
+source: 'S67',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e102',
+source: 'S67',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e103',
+source: 'S67',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e104',
+source: 'S67',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e105',
+source: 'S67',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e106',
+source: 'S67',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e107',
+source: 'S67',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e108',
+source: 'S67',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e109',
+source: 'S67',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e110',
+source: 'S68',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e111',
+source: 'S68',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e112',
+source: 'S68',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e113',
+source: 'S68',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e114',
+source: 'S68',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e115',
+source: 'S68',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e116',
+source: 'S68',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e117',
+source: 'S68',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e118',
+source: 'S68',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e119',
+source: 'S68',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e120',
+source: 'S68',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e121',
+source: 'S68',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e122',
+source: 'S68',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e123',
+source: 'S68',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e124',
+source: 'S68',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e125',
+source: 'S70',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e126',
+source: 'S70',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e127',
+source: 'S70',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e128',
+source: 'S70',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e129',
+source: 'S70',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e130',
+source: 'S70',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e131',
+source: 'S70',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e132',
+source: 'S70',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e133',
+source: 'S70',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e134',
+source: 'S70',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e135',
+source: 'S70',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e136',
+source: 'S70',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e137',
+source: 'S70',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e138',
+source: 'S70',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e139',
+source: 'S70',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e140',
+source: 'S70',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e141',
+source: 'S70',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e142',
+source: 'S71',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e143',
+source: 'S71',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e144',
+source: 'S71',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e145',
+source: 'S71',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e146',
+source: 'S71',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e147',
+source: 'S71',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e148',
+source: 'S71',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e149',
+source: 'S71',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e150',
+source: 'S71',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e151',
+source: 'S71',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e152',
+source: 'S71',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e153',
+source: 'S71',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e154',
+source: 'S71',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e155',
+source: 'S71',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e156',
+source: 'S71',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e157',
+source: 'S71',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e158',
+source: 'S71',
+target: 'S70',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e159',
+source: 'S72',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e160',
+source: 'S72',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e161',
+source: 'S72',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e162',
+source: 'S72',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e163',
+source: 'S72',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e164',
+source: 'S72',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e165',
+source: 'S72',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e166',
+source: 'S72',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e167',
+source: 'S72',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e168',
+source: 'S72',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e169',
+source: 'S72',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e170',
+source: 'S72',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e171',
+source: 'S72',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e172',
+source: 'S72',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e173',
+source: 'S72',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e174',
+source: 'S72',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e175',
+source: 'S72',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e176',
+source: 'S72',
+target: 'S70',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e177',
+source: 'S72',
+target: 'S71',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e178',
+source: 'S76',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e179',
+source: 'S76',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e180',
+source: 'S76',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e181',
+source: 'S76',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e182',
+source: 'S76',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e183',
+source: 'S76',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e184',
+source: 'S76',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e185',
+source: 'S76',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e186',
+source: 'S76',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e187',
+source: 'S76',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e188',
+source: 'S76',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e189',
+source: 'S76',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e190',
+source: 'S76',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e191',
+source: 'S76',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e192',
+source: 'S76',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e193',
+source: 'S76',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e194',
+source: 'S76',
+target: 'S70',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e195',
+source: 'S76',
+target: 'S71',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e196',
+source: 'S76',
+target: 'S72',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e197',
+source: 'S78',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e198',
+source: 'S78',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e199',
+source: 'S78',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e200',
+source: 'S78',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e201',
+source: 'S78',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e202',
+source: 'S78',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e203',
+source: 'S78',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e204',
+source: 'S78',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e205',
+source: 'S78',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e206',
+source: 'S78',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e207',
+source: 'S78',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e208',
+source: 'S78',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e209',
+source: 'S78',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e210',
+source: 'S78',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e211',
+source: 'S78',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e212',
+source: 'S78',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e213',
+source: 'S78',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e214',
+source: 'S78',
+target: 'S70',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e215',
+source: 'S78',
+target: 'S71',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e216',
+source: 'S78',
+target: 'S72',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e217',
+source: 'S78',
+target: 'S76',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e218',
+source: 'S81',
+target: 'S0',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e219',
+source: 'S81',
+target: 'S1',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e220',
+source: 'S81',
+target: 'S13',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e221',
+source: 'S81',
+target: 'S14',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e222',
+source: 'S81',
+target: 'S20',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e223',
+source: 'S81',
+target: 'S24',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e224',
+source: 'S81',
+target: 'S26',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e225',
+source: 'S81',
+target: 'S29',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e226',
+source: 'S81',
+target: 'S36',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e227',
+source: 'S81',
+target: 'S42',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e228',
+source: 'S81',
+target: 'S44',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e229',
+source: 'S81',
+target: 'S50',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e230',
+source: 'S81',
+target: 'S55',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e231',
+source: 'S81',
+target: 'S56',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e232',
+source: 'S81',
+target: 'S66',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e233',
+source: 'S81',
+target: 'S67',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e234',
+source: 'S81',
+target: 'S68',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e235',
+source: 'S81',
+target: 'S70',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e236',
+source: 'S81',
+target: 'S71',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e237',
+source: 'S81',
+target: 'S72',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e238',
+source: 'S81',
+target: 'S76',
+size: 3,
+color: '#ccc'})
+
+g.edges.push({
+id: 'e239',
+source: 'S81',
+target: 'S78',
+size: 3,
+color: '#ccc'})
+
+//set size based on connections:
+
+
+
+// sigma.renderers.def = sigma.renderers.canvas
+// Instantiate sigma:
+s = new sigma({
+  graph: g,
+  container: 'graph-container'
+});
+
+
+s.startForceAtlas2({worker: true, barnesHutOptimize: false, gravity: 4, startingIterations: 1, slowDown: 10});
+
+for(i = 0; i < 40; i++)
+{
+  setTimeout(slow, i*200);
+}
+
+setTimeout(stop,8000)
+
+t = 0
+
+function slow()
+{
+  t += 20;
+  console.log(t);
+  s.configForceAtlas2({slowDown: t})
+}
+function stop()
+{
+  s.stopForceAtlas2()
+}
+
+
+// Initialize the dragNodes plugin:
+var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+dragListener.bind('startdrag', function(event) {
+  console.log(event);
+});
+dragListener.bind('drag', function(event) {
+  console.log(event);
+});
+dragListener.bind('drop', function(event) {
+  console.log(event);
+});
+dragListener.bind('dragend', function(event) {
+  console.log(event);
+});
+</script>
